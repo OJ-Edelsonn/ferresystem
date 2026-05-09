@@ -1,0 +1,372 @@
+/* ══════════════════════════════════════════════
+   FerreSystem — Estilos del sitio público
+   J&S Ferretería — Quiparacra, Huachón, Pasco
+   Estilo: moderno, minimalista, rojo y blanco
+══════════════════════════════════════════════ */
+
+/* ── Variables de color ── */
+:root {
+    --rojo:        #C0392B;
+    --rojo-oscuro: #A93226;
+    --rojo-claro:  #FDECEA;
+    --navy:        #1B2A4A;
+    --gris:        #F4F4F4;
+    --gris-medio:  #888888;
+    --blanco:      #FFFFFF;
+    --texto:       #222222;
+}
+
+/* ── Reset base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    color: var(--texto);
+    background: var(--blanco);
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+a { color: var(--rojo); text-decoration: none; }
+a:hover { color: var(--rojo-oscuro); }
+
+img { max-width: 100%; display: block; }
+
+/* ── Navbar ── */
+.navbar-js {
+    background: var(--blanco);
+    border-bottom: 2px solid var(--rojo);
+    padding: 0.8rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.navbar-logo {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--rojo);
+    letter-spacing: -0.5px;
+}
+.navbar-logo span { color: var(--navy); }
+.navbar-nav {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+}
+.navbar-nav a {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--navy);
+    transition: color 0.2s;
+}
+.navbar-nav a:hover,
+.navbar-nav a.activo { color: var(--rojo); }
+
+/* Menú hamburguesa móvil */
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+}
+.nav-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--navy);
+    margin: 5px 0;
+    transition: 0.3s;
+}
+
+/* ── Hero ── */
+.hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #2C3E6A 100%);
+    color: var(--blanco);
+    padding: 5rem 1.5rem 4rem;
+    text-align: center;
+}
+.hero h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+.hero h1 span { color: var(--rojo); }
+.hero p {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.8);
+    max-width: 560px;
+    margin: 0 auto 2rem;
+}
+.hero-btns {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* ── Botones ── */
+.btn-rojo {
+    background: var(--rojo);
+    color: var(--blanco);
+    padding: 0.75rem 1.8rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 2px solid var(--rojo);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    display: inline-block;
+}
+.btn-rojo:hover {
+    background: var(--rojo-oscuro);
+    border-color: var(--rojo-oscuro);
+    color: var(--blanco);
+    transform: translateY(-1px);
+}
+.btn-outline {
+    background: transparent;
+    color: var(--blanco);
+    padding: 0.75rem 1.8rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 2px solid rgba(255,255,255,0.6);
+    cursor: pointer;
+    transition: 0.2s;
+    display: inline-block;
+}
+.btn-outline:hover {
+    border-color: var(--blanco);
+    color: var(--blanco);
+    background: rgba(255,255,255,0.1);
+}
+
+/* ── Secciones generales ── */
+.seccion {
+    padding: 4rem 1.5rem;
+}
+.seccion-gris { background: var(--gris); }
+.seccion-titulo {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+.seccion-titulo h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 0.5rem;
+}
+.seccion-titulo p {
+    color: var(--gris-medio);
+    font-size: 1rem;
+    max-width: 500px;
+    margin: 0 auto;
+}
+.linea-roja {
+    width: 48px;
+    height: 4px;
+    background: var(--rojo);
+    border-radius: 2px;
+    margin: 0.75rem auto 0;
+}
+
+/* ── Container ── */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* ── Tarjetas de categoría ── */
+.grid-categorias {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+}
+.card-categoria {
+    background: var(--blanco);
+    border: 1.5px solid #eee;
+    border-radius: 10px;
+    padding: 1.2rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.1s;
+    text-decoration: none;
+    color: var(--texto);
+}
+.card-categoria:hover,
+.card-categoria.activo {
+    border-color: var(--rojo);
+    box-shadow: 0 4px 12px rgba(192,57,43,0.12);
+    transform: translateY(-2px);
+    color: var(--rojo);
+}
+.card-categoria .icono {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+.card-categoria p {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* ── Grid de productos ── */
+.grid-productos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.2rem;
+    margin-top: 1.5rem;
+}
+.card-producto {
+    background: var(--blanco);
+    border: 1px solid #eee;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.1s;
+}
+.card-producto:hover {
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+.card-producto-img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    background: var(--gris);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: #ccc;
+}
+.card-producto-body {
+    padding: 1rem;
+}
+.card-producto-nombre {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--navy);
+    margin-bottom: 0.3rem;
+}
+.card-producto-desc {
+    font-size: 0.82rem;
+    color: var(--gris-medio);
+    margin-bottom: 0.75rem;
+    min-height: 36px;
+}
+.card-producto-precio {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--rojo);
+    margin-bottom: 0.75rem;
+}
+.btn-agregar {
+    width: 100%;
+    background: var(--navy);
+    color: var(--blanco);
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-agregar:hover { background: var(--rojo); }
+
+/* ── Características / info ── */
+.grid-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+.feature-card {
+    text-align: center;
+    padding: 1.5rem 1rem;
+}
+.feature-icono {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+}
+.feature-card h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 0.4rem;
+}
+.feature-card p {
+    font-size: 0.88rem;
+    color: var(--gris-medio);
+}
+
+/* ── WhatsApp flotante ── */
+.whatsapp-float {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 56px;
+    height: 56px;
+    background: #25D366;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(37,211,102,0.4);
+    z-index: 1000;
+    transition: transform 0.2s;
+    text-decoration: none;
+}
+.whatsapp-float:hover { transform: scale(1.1); }
+.whatsapp-float svg { width: 30px; height: 30px; fill: white; }
+
+/* ── Footer ── */
+footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.7);
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    font-size: 0.88rem;
+}
+footer strong { color: var(--blanco); }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .navbar-nav {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--blanco);
+        padding: 1rem 1.5rem;
+        border-bottom: 2px solid var(--rojo);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        gap: 0.75rem;
+    }
+    .navbar-nav.abierto { display: flex; }
+    .nav-toggle { display: block; }
+    .hero { padding: 3rem 1rem 2.5rem; }
+    .grid-productos { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+    .seccion { padding: 2.5rem 1rem; }
+}
+
+/* ── Fix navbar horizontal en desktop ── */
+@media (min-width: 769px) {
+    .navbar-nav {
+        display: flex !important;
+        flex-direction: row !important;
+        position: static !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        gap: 1.5rem !important;
+    }
+}
