@@ -17,7 +17,6 @@ function getConexion() {
         ];
         return new PDO($dsn, DB_USER, DB_PASS, $opciones);
     } catch (PDOException $e) {
-        // En producción esto no debe mostrar el error al usuario
         die("Error de conexión: " . $e->getMessage());
     }
 }
