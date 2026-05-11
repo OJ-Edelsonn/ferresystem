@@ -150,6 +150,7 @@ img { max-width: 100%; display: block; }
 /* ── Secciones generales ── */
 .seccion {
     padding: 4rem 1.5rem;
+    text-align: center
 }
 .seccion-gris { background: var(--gris); }
 .seccion-titulo {
@@ -282,13 +283,18 @@ img { max-width: 100%; display: block; }
 
 /* ── Características / info ── */
 .grid-features {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 1.5rem;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: center;
 }
 .feature-card {
     text-align: center;
     padding: 1.5rem 1rem;
+    width: 220px;
+    flex-shrink: 0;
 }
 .feature-icono {
     font-size: 2.5rem;
