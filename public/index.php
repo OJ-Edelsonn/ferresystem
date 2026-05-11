@@ -10,8 +10,8 @@ require_once 'navbar.php';
         <h1>Tu ferretería de confianza<br>en <span>Quiparacra</span></h1>
         <p>Materiales de construcción, herramientas y todo lo que necesitas para tu obra — directo en tu localidad.</p>
         <div class="hero-btns">
-            <a href="/ferresystem/public/catalogo.php" class="btn-rojo">Ver catálogo</a>
-            <a href="/ferresystem/public/cotizador.php" class="btn-outline">Hacer cotización</a>
+            <a href="catalogo.php" class="btn-rojo">Ver catálogo</a>
+            <a href="cotizador.php" class="btn-outline">Hacer cotización</a>
         </div>
     </div>
 </section>
@@ -68,15 +68,15 @@ $productos_recientes = $stmt->fetchAll();
         </div>
         <div class="grid-productos">
             <?php foreach ($productos_recientes as $p): ?>
-            <div class="card-producto">
-                <div class="card-producto-img">🔧</div>
-                <div class="card-producto-body">
-                    <div class="card-producto-nombre"><?= htmlspecialchars($p['nombre']) ?></div>
-                    <div class="card-producto-desc"><?= htmlspecialchars($p['descripcion'] ?? $p['categoria_nombre']) ?></div>
-                    <div class="card-producto-precio">S/. <?= number_format($p['precio_venta'], 2) ?></div>
-                    <a href="/ferresystem/public/cotizador.php" class="btn-agregar">Agregar a cotización</a>
+                <div class="card-producto">
+                    <div class="card-producto-img">🔧</div>
+                    <div class="card-producto-body">
+                        <div class="card-producto-nombre"><?= htmlspecialchars($p['nombre']) ?></div>
+                        <div class="card-producto-desc"><?= htmlspecialchars($p['descripcion'] ?? $p['categoria_nombre']) ?></div>
+                        <div class="card-producto-precio">S/. <?= number_format($p['precio_venta'], 2) ?></div>
+                        <a href="/ferresystem/public/cotizador.php" class="btn-agregar">Agregar a cotización</a>
+                    </div>
                 </div>
-            </div>
             <?php endforeach; ?>
             <?php if (empty($productos_recientes)): ?>
                 <p class="text-muted">Próximamente productos disponibles.</p>
@@ -98,7 +98,7 @@ $productos_recientes = $stmt->fetchAll();
             Escríbenos por WhatsApp y te respondemos al instante.
         </p>
         <a href="https://wa.me/51900749742?text=Hola,%20quiero%20consultar%20sobre%20sus%20productos"
-           class="btn-rojo" target="_blank">
+            class="btn-rojo" target="_blank">
             💬 Escribir por WhatsApp
         </a>
     </div>

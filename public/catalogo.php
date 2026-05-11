@@ -90,7 +90,7 @@ $iconos = [
                 <?= count($productos) ?> producto(s) encontrado(s)
                 <?= $categoria_id ? '— ' . htmlspecialchars($categorias[array_search($categoria_id, array_column($categorias, 'id'))]['nombre'] ?? '') : '' ?>
             </p>
-            <a href="/ferresystem/public/cotizador.php" class="btn-rojo" style="font-size:0.88rem;padding:0.5rem 1.2rem;">
+            <a href="cotizador.php" class="btn-rojo" style="font-size:0.88rem;padding:0.5rem 1.2rem;">
                 🛒 Ir al cotizador
             </a>
         </div>
