@@ -86,7 +86,7 @@ $mensaje_wa   = urlencode('Hola, me interesa solicitar un presupuesto para una o
                  'Escríbenos por WhatsApp o visítanos en la ferretería y cuéntanos qué necesitas.'],
                 ['2', 'Visita y presupuesto',
                  'Visitamos la obra, evaluamos el trabajo y te damos un presupuesto claro sin sorpresas.'],
-                ['3', 'Elegís tus materiales',
+                ['3', 'Eliges tus materiales',
                  'Con tu presupuesto en mano, te asesoramos en la ferretería para elegir los mejores materiales al mejor precio.'],
                 ['4', 'Iniciamos la obra',
                  'Comenzamos el trabajo con nuestro personal en el plazo acordado.'],
