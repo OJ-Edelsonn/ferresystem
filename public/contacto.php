@@ -1,0 +1,142 @@
+<?php
+$titulo        = 'Contacto';
+$pagina_activa = 'contacto';
+require_once 'navbar.php';
+
+$tel_whatsapp = '51900749742';
+$enviado      = false;
+$error_form   = '';
+
+// Procesar formulario de contacto
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nombre  = trim($_POST['nombre']  ?? '');
+    $celular = trim($_POST['celular'] ?? '');
+    $mensaje = trim($_POST['mensaje'] ?? '');
+
+    if (empty($nombre) || empty($celular) || empty($mensaje)) {
+        $error_form = 'Por favor completa todos los campos.';
+    } else {
+        // Por ahora redirige a WhatsApp con el mensaje
+        $texto = urlencode("Hola, soy {$nombre} ({$celular}). {$mensaje}");
+        header("Location: https://wa.me/{$tel_whatsapp}?text={$texto}");
+        exit;
+    }
+}
+?>
+
+<section class="seccion seccion-gris" style="padding-top:2.5rem;padding-bottom:1.5rem;">
+    <div class="container">
+        <div class="seccion-titulo" style="margin-bottom:0.5rem;">
+            <h2>Contáctanos</h2>
+            <p>Estamos en Quiparacra, Huachón, Pasco — cerca de ti</p>
+            <div class="linea-roja"></div>
+        </div>
+    </div>
+</section>
+
+<section class="seccion" style="padding-top:2rem;">
+    <div class="container">
+        <div class="row g-4">
+
+            <!-- Info de contacto -->
+            <div class="col-lg-5">
+                <h3 style="font-size:1.2rem;font-weight:700;color:var(--navy);margin-bottom:1.5rem;">
+                    Información de contacto
+                </h3>
+
+                <?php
+                $infos = [
+                    ['📍', 'Dirección',  'Quiparacra, Huachón, Pasco, Perú'],
+                    ['📞', 'Celular',    '900 749 742'],
+                    ['🕐', 'Horario',   'Lunes a sábado: 7:00am – 7:00pm'],
+                    ['📦', 'Entregas',  'Solo en Quiparacra y alrededores'],
+                ];
+                foreach ($infos as [$icono, $label, $valor]):
+                ?>
+                <div style="display:flex;gap:1rem;margin-bottom:1.2rem;align-items:flex-start;">
+                    <div style="font-size:1.5rem;flex-shrink:0;"><?= $icono ?></div>
+                    <div>
+                        <div style="font-weight:700;color:var(--navy);font-size:0.9rem;"><?= $label ?></div>
+                        <div style="color:var(--gris-medio);font-size:0.9rem;"><?= $valor ?></div>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+
+                <!-- Botón WhatsApp -->
+                <a href="https://wa.me/<?= $tel_whatsapp ?>?text=Hola,%20quiero%20consultar"
+                   target="_blank" class="btn-rojo"
+                   style="display:flex;align-items:center;gap:0.5rem;width:fit-content;margin-top:0.5rem;">
+                    💬 Escribir por WhatsApp
+                </a>
+            </div>
+
+            <!-- Formulario + mapa -->
+            <div class="col-lg-7">
+
+                <!-- Mapa de Google Maps embebido -->
+                <div style="border-radius:12px;overflow:hidden;margin-bottom:1.5rem;
+                            box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15528.123456789!2d-75.9876!3d-10.1234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sQuiparacra!5e0!3m2!1ses!2spe!4v1234567890"
+                        width="100%"
+                        height="220"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+
+                <!-- Formulario de contacto -->
+                <div style="background:#f9f9f9;border-radius:12px;padding:1.5rem;">
+                    <h3 style="font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:1rem;">
+                        Envíanos un mensaje
+                    </h3>
+
+                    <?php if ($error_form): ?>
+                        <div class="alert alert-danger py-2 mb-3"><?= htmlspecialchars($error_form) ?></div>
+                    <?php endif; ?>
+
+                    <form method="POST">
+                        <div style="margin-bottom:0.75rem;">
+                            <label style="font-size:0.88rem;font-weight:600;color:var(--navy);
+                                          display:block;margin-bottom:0.3rem;">Nombre *</label>
+                            <input type="text" name="nombre" required
+                                   placeholder="Tu nombre completo"
+                                   value="<?= htmlspecialchars($_POST['nombre'] ?? '') ?>"
+                                   style="width:100%;padding:0.6rem;border:1.5px solid #ddd;
+                                          border-radius:8px;font-size:0.9rem;outline:none;background:#fff;">
+                        </div>
+                        <div style="margin-bottom:0.75rem;">
+                            <label style="font-size:0.88rem;font-weight:600;color:var(--navy);
+                                          display:block;margin-bottom:0.3rem;">Celular *</label>
+                            <input type="tel" name="celular" required
+                                   placeholder="Ej: 987654321"
+                                   value="<?= htmlspecialchars($_POST['celular'] ?? '') ?>"
+                                   style="width:100%;padding:0.6rem;border:1.5px solid #ddd;
+                                          border-radius:8px;font-size:0.9rem;outline:none;background:#fff;">
+                        </div>
+                        <div style="margin-bottom:1rem;">
+                            <label style="font-size:0.88rem;font-weight:600;color:var(--navy);
+                                          display:block;margin-bottom:0.3rem;">Mensaje *</label>
+                            <textarea name="mensaje" required rows="4"
+                                      placeholder="¿En qué te podemos ayudar?"
+                                      style="width:100%;padding:0.6rem;border:1.5px solid #ddd;
+                                             border-radius:8px;font-size:0.9rem;outline:none;
+                                             background:#fff;resize:vertical;"><?= htmlspecialchars($_POST['mensaje'] ?? '') ?></textarea>
+                        </div>
+                        <button type="submit" class="btn-rojo" style="width:100%;">
+                            💬 Enviar mensaje por WhatsApp
+                        </button>
+                        <p style="font-size:0.78rem;color:var(--gris-medio);
+                                  text-align:center;margin-top:0.5rem;">
+                            Al enviar serás redirigido a WhatsApp con tu mensaje listo
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<?php require_once 'footer.php'; ?>
