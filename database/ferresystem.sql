@@ -173,7 +173,7 @@ CREATE TABLE IF NOT EXISTS stock_movimientos (
 -- Contraseña: ferresystem2025 (hasheada con password_hash)
 INSERT INTO usuarios (nombre, email, password) VALUES
 ('Edelson Orihuela', 'eoj.secu@gmail.com',
- '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uFpxRHDGy');
+ '$2y$10$OY6fLCPoAdtz96UeM/1pAuCWsWTtMx.fnBeMGHKyRdR3hwbDQ/3kK');
 
 -- Categorías iniciales de J&S Ferretería
 INSERT INTO categorias (nombre, descripcion) VALUES
