@@ -99,31 +99,35 @@ AuthController::verificarSesion();
         <p>Panel de administración</p>
     </div>
     <nav class="sidebar-nav">
-        <a href="/ferresystem/admin/dashboard.php"
+        <?php require_once __DIR__ . '/../config/app.php'; ?>
+        <a href="<?= BASE_URL ?>/admin/dashboard.php"
            class="<?= ($pagina_activa ?? '') === 'dashboard'    ? 'activo' : '' ?>">
             📊 Dashboard
         </a>
-        <a href="/ferresystem/admin/inventario.php"
+        <a href="<?= BASE_URL ?>/admin/inventario.php"
            class="<?= ($pagina_activa ?? '') === 'inventario'   ? 'activo' : '' ?>">
             📦 Inventario
         </a>
-        <a href="/ferresystem/admin/ventas.php"
+        <a href="<?= BASE_URL ?>/admin/ventas.php"
            class="<?= ($pagina_activa ?? '') === 'ventas'       ? 'activo' : '' ?>">
             🛒 Ventas
         </a>
-        <a href="/ferresystem/admin/caja.php"
+        <a href="<?= BASE_URL ?>/admin/caja.php"
            class="<?= ($pagina_activa ?? '') === 'caja'         ? 'activo' : '' ?>">
             💰 Caja
         </a>
-        <a href="/ferresystem/admin/pedidos.php"
+        <a href="<?= BASE_URL ?>/admin/pedidos.php"
            class="<?= ($pagina_activa ?? '') === 'pedidos'      ? 'activo' : '' ?>">
             📋 Pedidos
         </a>
-        <a href="/ferresystem/admin/cotizaciones.php"
+        <a href="<?= BASE_URL ?>/admin/cotizaciones.php"
            class="<?= ($pagina_activa ?? '') === 'cotizaciones' ? 'activo' : '' ?>">
             📝 Cotizaciones de obra
         </a>
     </nav>
+    <div class="sidebar-footer">
+        <a href="<?= BASE_URL ?>/admin/logout.php">⬅ Cerrar sesión</a>
+    </div>
     <div class="sidebar-footer">
         <a href="/ferresystem/admin/logout.php">⬅ Cerrar sesión</a>
     </div>

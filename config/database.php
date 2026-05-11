@@ -1,11 +1,8 @@
 <?php
-// Configuración de conexión a MySQL usando PDO
-// Este archivo es el único lugar donde van las credenciales de la BD
-
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'ferresystem');
-define('DB_USER', 'root');
-define('DB_PASS', '');  // En XAMPP local la contraseña es vacía por defecto
+define('DB_HOST', 'sql300.infinityfree.com');
+define('DB_NAME', 'if0_41886787_ferresystem');
+define('DB_USER', 'if0_41886787');
+define('DB_PASS', 'TU_CONTRASEÑA_AQUI');  // Pon tu contraseña real aquí
 
 function getConexion() {
     try {

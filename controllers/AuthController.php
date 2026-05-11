@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../config/app.php';
 
 class AuthController {
 
@@ -15,7 +16,7 @@ class AuthController {
             session_start();
             $_SESSION['usuario_id']     = $usuario['id'];
             $_SESSION['usuario_nombre'] = $usuario['nombre'];
-            header("Location: /ferresystem/admin/dashboard.php");
+            header("Location: " . BASE_URL . "/admin/dashboard.php");
             exit;
         } else {
             return "Correo o contraseña incorrectos.";
@@ -26,7 +27,7 @@ class AuthController {
     public function logout() {
         session_start();
         session_destroy();
-        header("Location: /ferresystem/admin/login.php");
+        header("Location: " . BASE_URL . "/admin/login.php");
         exit;
     }
 
@@ -36,7 +37,8 @@ class AuthController {
             session_start();
         }
         if (!isset($_SESSION['usuario_id'])) {
-            header("Location: /ferresystem/admin/login.php");
+            require_once __DIR__ . '/../config/app.php';
+            header("Location: " . BASE_URL . "/admin/login.php");
             exit;
         }
     }

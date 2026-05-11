@@ -1,0 +1,14 @@
+# Seguridad básica para FerreSystem
+Options -Indexes
+
+# Proteger archivos sensibles
+<FilesMatch "\.(sql|log|env|md|json|lock)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Proteger carpeta config
+<FilesMatch "^(database|app)\.php$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
