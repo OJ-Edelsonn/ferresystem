@@ -79,8 +79,7 @@ $mensaje_wa   = urlencode('Hola, me interesa solicitar un presupuesto para una o
             <h2>¿Cómo trabajamos?</h2>
             <div class="linea-roja"></div>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-                    gap:1.5rem;margin-top:1rem;">
+        <div style="display:flex;flex-wrap:wrap;gap:1.5rem;margin-top:1rem;justify-content:center;align-items:stretch;">
             <?php
             $pasos = [
                 ['1', 'Nos contactas',
