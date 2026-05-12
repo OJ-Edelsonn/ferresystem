@@ -1,17 +1,10 @@
 <?php
-// ══════════════════════════════════════════════
-// Detecta automáticamente si estás en local
-// o en producción y usa las credenciales correctas
-// ══════════════════════════════════════════════
-
 if ($_SERVER['HTTP_HOST'] === 'localhost') {
-    // ── CONFIGURACIÓN LOCAL (XAMPP) ──
     define('DB_HOST', 'localhost');
     define('DB_NAME', 'ferresystem');
     define('DB_USER', 'root');
     define('DB_PASS', '');
 } else {
-    // ── CONFIGURACIÓN PRODUCCIÓN (InfinityFree) ──
     define('DB_HOST', 'sql300.infinityfree.com');
     define('DB_NAME', 'if0_41886787_ferresystem');
     define('DB_USER', 'if0_41886787');
