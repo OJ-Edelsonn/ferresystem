@@ -93,7 +93,7 @@ $productos_recientes = $stmt->fetchAll();
             <?php endif; ?>
         </div>
         <div style="text-align:center;margin-top:2rem;">
-            <a href="/ferresystem/public/catalogo.php" class="btn-rojo">Ver catálogo completo</a>
+            <a href="catalogo.php" class="btn-rojo">Ver catálogo completo</a>
         </div>
     </div>
 </section>
