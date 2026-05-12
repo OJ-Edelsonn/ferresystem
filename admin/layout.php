@@ -128,9 +128,6 @@ AuthController::verificarSesion();
     <div class="sidebar-footer">
         <a href="<?= BASE_URL ?>/admin/logout.php">⬅ Cerrar sesión</a>
     </div>
-    <div class="sidebar-footer">
-        <a href="/ferresystem/admin/logout.php">⬅ Cerrar sesión</a>
-    </div>
 </div>
 
 <div class="main-content">

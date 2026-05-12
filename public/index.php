@@ -69,7 +69,17 @@ $productos_recientes = $stmt->fetchAll();
         <div class="grid-productos">
             <?php foreach ($productos_recientes as $p): ?>
                 <div class="card-producto">
-                    <div class="card-producto-img">🔧</div>
+                    <div class="card-producto-img">
+                        <?php if (!empty($p['foto'])): ?>
+                            <img src="img/productos/<?= htmlspecialchars($p['foto']) ?>"
+                                alt="<?= htmlspecialchars($p['nombre']) ?>"
+                                style="width:100%;height:100%;object-fit:cover;">
+                        <?php else: ?>
+                            <span style="font-size:3rem;">
+                                <?= $iconos[$p['categoria_nombre']] ?? '📦' ?>
+                            </span>
+                        <?php endif; ?>
+                    </div>
                     <div class="card-producto-body">
                         <div class="card-producto-nombre"><?= htmlspecialchars($p['nombre']) ?></div>
                         <div class="card-producto-desc"><?= htmlspecialchars($p['descripcion'] ?? $p['categoria_nombre']) ?></div>

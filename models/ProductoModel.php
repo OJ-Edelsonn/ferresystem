@@ -1,10 +1,12 @@
 <?php
 require_once __DIR__ . '/../config/database.php';
 
-class ProductoModel {
+class ProductoModel
+{
 
     // Obtener todos los productos con su categoría
-    public function obtenerTodos($categoria_id = null, $busqueda = '') {
+    public function obtenerTodos($categoria_id = null, $busqueda = '')
+    {
         $conn = getConexion();
         $sql = "SELECT p.*, c.nombre AS categoria_nombre 
                 FROM productos p 
@@ -28,7 +30,8 @@ class ProductoModel {
     }
 
     // Obtener un producto por ID
-    public function obtenerPorId($id) {
+    public function obtenerPorId($id)
+    {
         $conn = getConexion();
         $stmt = $conn->prepare("SELECT * FROM productos WHERE id = ? AND activo = 1");
         $stmt->execute([$id]);
@@ -36,11 +39,12 @@ class ProductoModel {
     }
 
     // Crear un producto nuevo
-    public function crear($datos) {
+    public function crear($datos)
+    {
         $conn = getConexion();
         $stmt = $conn->prepare("INSERT INTO productos 
-            (nombre, categoria_id, descripcion, precio_compra, precio_venta, stock_actual, stock_minimo)
-            VALUES (?, ?, ?, ?, ?, ?, ?)");
+        (nombre, categoria_id, descripcion, precio_compra, precio_venta, stock_actual, stock_minimo, foto)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         return $stmt->execute([
             $datos['nombre'],
             $datos['categoria_id'],
@@ -49,21 +53,24 @@ class ProductoModel {
             $datos['precio_venta'],
             $datos['stock_actual'],
             $datos['stock_minimo'],
+            $datos['foto'] ?? null,
         ]);
     }
 
     // Actualizar un producto existente
-    public function actualizar($id, $datos) {
+    public function actualizar($id, $datos)
+    {
         $conn = getConexion();
         $stmt = $conn->prepare("UPDATE productos SET
-            nombre        = ?,
-            categoria_id  = ?,
-            descripcion   = ?,
-            precio_compra = ?,
-            precio_venta  = ?,
-            stock_actual  = ?,
-            stock_minimo  = ?
-            WHERE id = ?");
+        nombre        = ?,
+        categoria_id  = ?,
+        descripcion   = ?,
+        precio_compra = ?,
+        precio_venta  = ?,
+        stock_actual  = ?,
+        stock_minimo  = ?,
+        foto          = ?
+        WHERE id = ?");
         return $stmt->execute([
             $datos['nombre'],
             $datos['categoria_id'],
@@ -72,19 +79,21 @@ class ProductoModel {
             $datos['precio_venta'],
             $datos['stock_actual'],
             $datos['stock_minimo'],
+            $datos['foto'] ?? null,
             $id,
         ]);
     }
-
     // Eliminar producto (baja lógica — no se borra de la BD)
-    public function eliminar($id) {
+    public function eliminar($id)
+    {
         $conn = getConexion();
         $stmt = $conn->prepare("UPDATE productos SET activo = 0 WHERE id = ?");
         return $stmt->execute([$id]);
     }
 
     // Obtener productos con stock crítico
-    public function obtenerStockCritico() {
+    public function obtenerStockCritico()
+    {
         $conn = getConexion();
         $stmt = $conn->prepare("SELECT p.*, c.nombre AS categoria_nombre 
                                 FROM productos p
@@ -96,7 +105,8 @@ class ProductoModel {
     }
 
     // Registrar entrada de stock
-    public function registrarEntrada($producto_id, $cantidad, $observacion = '') {
+    public function registrarEntrada($producto_id, $cantidad, $observacion = '')
+    {
         $conn = getConexion();
 
         // Actualizar stock
@@ -113,11 +123,11 @@ class ProductoModel {
     }
 
     // Obtener todas las categorías activas
-    public function obtenerCategorias() {
+    public function obtenerCategorias()
+    {
         $conn = getConexion();
         $stmt = $conn->prepare("SELECT * FROM categorias WHERE activo = 1 ORDER BY nombre ASC");
         $stmt->execute();
         return $stmt->fetchAll();
     }
 }
-?>

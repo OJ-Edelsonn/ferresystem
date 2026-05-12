@@ -150,6 +150,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enviar_pedido'])) {
                                                 · Stock: <?= $p['stock_actual'] ?>
                                             </div>
                                         </div>
+                                        <?php if (!empty($p['foto'])): ?>
+                                            <img src="img/productos/<?= htmlspecialchars($p['foto']) ?>"
+                                                style="width:40px;height:40px;object-fit:cover;border-radius:6px;flex-shrink:0;">
+                                        <?php endif; ?>
                                         <button onclick="agregarProducto(<?= $p['id'] ?>, '<?= htmlspecialchars(addslashes($p['nombre'])) ?>', <?= $p['precio_venta'] ?>, <?= $p['stock_actual'] ?>)"
                                             style="background:var(--navy);color:#fff;border:none;border-radius:6px;
                                            padding:0.35rem 0.8rem;font-size:0.82rem;cursor:pointer;

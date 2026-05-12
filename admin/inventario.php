@@ -23,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'precio_venta'  => $_POST['precio_venta'] ?? 0,
             'stock_actual'  => $_POST['stock_actual'] ?? 0,
             'stock_minimo'  => $_POST['stock_minimo'] ?? 5,
+            'foto'          => $_POST['foto'] ?? null,
         ];
         if ($accion === 'crear') {
             $resultado = $controller->crear($datos);
@@ -105,6 +106,7 @@ require_once 'layout.php';
     <table class="table table-hover mb-0" style="font-size:0.9rem;">
         <thead style="background:#1B2A4A;color:#fff;">
             <tr>
+                <th>Foto</th>
                 <th>Producto</th>
                 <th>Categoría</th>
                 <th>P. Compra</th>
@@ -117,11 +119,22 @@ require_once 'layout.php';
         </thead>
         <tbody>
         <?php if (empty($productos)): ?>
-            <tr><td colspan="8" class="text-center py-4 text-muted">No hay productos registrados.</td></tr>
+            <tr><td colspan="9" class="text-center py-4 text-muted">No hay productos registrados.</td></tr>
         <?php endif; ?>
         <?php foreach ($productos as $p): ?>
             <?php $critico = $p['stock_actual'] <= $p['stock_minimo']; ?>
             <tr class="<?= $critico ? 'table-danger' : '' ?>">
+                <td>
+                    <?php if (!empty($p['foto'])): ?>
+                        <img src="/ferresystem/public/img/productos/<?= htmlspecialchars($p['foto']) ?>"
+                             style="width:48px;height:48px;object-fit:cover;border-radius:6px;">
+                    <?php else: ?>
+                        <div style="width:48px;height:48px;background:#f0f0f0;border-radius:6px;
+                                    display:flex;align-items:center;justify-content:center;font-size:1.4rem;">
+                            📦
+                        </div>
+                    <?php endif; ?>
+                </td>
                 <td>
                     <strong><?= htmlspecialchars($p['nombre']) ?></strong>
                     <?php if ($p['descripcion']): ?>
@@ -142,13 +155,10 @@ require_once 'layout.php';
                 </td>
                 <td>
                     <div class="d-flex gap-1">
-                        <!-- Editar -->
                         <button class="btn btn-sm btn-outline-primary"
                             onclick='abrirEditar(<?= json_encode($p) ?>)'>Editar</button>
-                        <!-- Entrada stock -->
                         <button class="btn btn-sm btn-outline-success"
                             onclick="abrirEntrada(<?= $p['id'] ?>, '<?= htmlspecialchars($p['nombre']) ?>')">+Stock</button>
-                        <!-- Eliminar -->
                         <form method="POST" onsubmit="return confirm('¿Eliminar este producto?')">
                             <input type="hidden" name="accion" value="eliminar">
                             <input type="hidden" name="producto_id" value="<?= $p['id'] ?>">
@@ -203,7 +213,7 @@ require_once 'layout.php';
                            class="form-control" step="0.01" min="0.01" required>
                 </div>
             </div>
-            <div class="row g-2">
+            <div class="row g-2 mb-2">
                 <div class="col">
                     <label class="form-label fw-semibold">Stock actual</label>
                     <input type="number" name="stock_actual" id="modal_stock_actual"
@@ -214,6 +224,21 @@ require_once 'layout.php';
                     <input type="number" name="stock_minimo" id="modal_stock_minimo"
                            class="form-control" min="0" value="5">
                 </div>
+            </div>
+            <!-- Selector de imagen -->
+            <div class="mb-2">
+                <label class="form-label fw-semibold">Imagen del producto</label>
+                <select name="foto" id="modal_foto" class="form-select">
+                    <option value="">Sin imagen</option>
+                    <?php
+                    $imgs = glob(__DIR__ . '/../public/img/productos/*.webp');
+                    if ($imgs): foreach ($imgs as $img):
+                        $nombre_img = basename($img);
+                    ?>
+                    <option value="<?= $nombre_img ?>"><?= $nombre_img ?></option>
+                    <?php endforeach; endif; ?>
+                </select>
+                <div id="preview_foto" style="margin-top:0.5rem;"></div>
             </div>
         </div>
         <div class="modal-footer">
@@ -259,31 +284,54 @@ require_once 'layout.php';
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+// Preview de imagen al seleccionar en el selector
+document.getElementById('modal_foto').addEventListener('change', function() {
+    var preview = document.getElementById('preview_foto');
+    if (this.value) {
+        preview.innerHTML = '<img src="/ferresystem/public/img/productos/' + this.value + '" ' +
+            'style="width:80px;height:80px;object-fit:cover;border-radius:8px;">';
+    } else {
+        preview.innerHTML = '';
+    }
+});
+
 function abrirEditar(p) {
-    document.getElementById('modal_accion').value       = 'editar';
-    document.getElementById('modal_titulo').textContent = 'Editar producto';
-    document.getElementById('modal_producto_id').value  = p.id;
-    document.getElementById('modal_nombre').value       = p.nombre;
-    document.getElementById('modal_categoria').value    = p.categoria_id;
-    document.getElementById('modal_descripcion').value  = p.descripcion || '';
-    document.getElementById('modal_precio_compra').value= p.precio_compra;
-    document.getElementById('modal_precio_venta').value = p.precio_venta;
-    document.getElementById('modal_stock_actual').value = p.stock_actual;
-    document.getElementById('modal_stock_minimo').value = p.stock_minimo;
+    document.getElementById('modal_accion').value        = 'editar';
+    document.getElementById('modal_titulo').textContent  = 'Editar producto';
+    document.getElementById('modal_producto_id').value   = p.id;
+    document.getElementById('modal_nombre').value        = p.nombre;
+    document.getElementById('modal_categoria').value     = p.categoria_id;
+    document.getElementById('modal_descripcion').value   = p.descripcion || '';
+    document.getElementById('modal_precio_compra').value = p.precio_compra;
+    document.getElementById('modal_precio_venta').value  = p.precio_venta;
+    document.getElementById('modal_stock_actual').value  = p.stock_actual;
+    document.getElementById('modal_stock_minimo').value  = p.stock_minimo;
+    document.getElementById('modal_foto').value          = p.foto || '';
+
+    // Mostrar preview de imagen actual
+    var preview = document.getElementById('preview_foto');
+    if (p.foto) {
+        preview.innerHTML = '<img src="/ferresystem/public/img/productos/' + p.foto + '" ' +
+            'style="width:80px;height:80px;object-fit:cover;border-radius:8px;">';
+    } else {
+        preview.innerHTML = '';
+    }
+
     new bootstrap.Modal(document.getElementById('modalProducto')).show();
 }
 
 function abrirEntrada(id, nombre) {
-    document.getElementById('entrada_producto_id').value      = id;
+    document.getElementById('entrada_producto_id').value       = id;
     document.getElementById('entrada_producto_nombre').textContent = nombre;
     new bootstrap.Modal(document.getElementById('modalEntrada')).show();
 }
 
 // Resetear modal al cerrar
-document.getElementById('modalProducto').addEventListener('hidden.bs.modal', function () {
-    document.getElementById('modal_accion').value      = 'crear';
+document.getElementById('modalProducto').addEventListener('hidden.bs.modal', function() {
+    document.getElementById('modal_accion').value       = 'crear';
     document.getElementById('modal_titulo').textContent = 'Agregar producto';
-    document.getElementById('modal_producto_id').value = '';
+    document.getElementById('modal_producto_id').value  = '';
+    document.getElementById('preview_foto').innerHTML   = '';
     this.querySelector('form').reset();
 });
 </script>

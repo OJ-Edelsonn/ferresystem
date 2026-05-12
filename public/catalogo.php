@@ -36,11 +36,16 @@ $productos = $stmt2->fetchAll();
 
 // Iconos por categoría
 $iconos = [
-    'Herramientas' => '🔨', 'Construcción' => '🏗️',
-    'Plomería'     => '🚿', 'Electricidad'  => '⚡',
-    'Pintura'      => '🎨', 'Seguridad'     => '🔒',
-    'Fijación'     => '🔩', 'Acabados'      => '🪣',
-    'Gasfitería'   => '🚰', 'Otros'         => '📦',
+    'Herramientas' => '🔨',
+    'Construcción' => '🏗️',
+    'Plomería'     => '🚿',
+    'Electricidad'  => '⚡',
+    'Pintura'      => '🎨',
+    'Seguridad'     => '🔒',
+    'Fijación'     => '🔩',
+    'Acabados'      => '🪣',
+    'Gasfitería'   => '🚰',
+    'Otros'         => '📦',
 ];
 ?>
 
@@ -56,25 +61,25 @@ $iconos = [
         <form method="GET" style="display:flex;gap:0.5rem;max-width:460px;margin:0 auto 2rem;">
             <input type="hidden" name="categoria" value="<?= htmlspecialchars($categoria_id ?? '') ?>">
             <input type="text" name="buscar" value="<?= htmlspecialchars($busqueda) ?>"
-                   placeholder="Buscar producto..." 
-                   style="flex:1;padding:0.6rem 1rem;border:1.5px solid #ddd;border-radius:8px;font-size:0.95rem;outline:none;">
+                placeholder="Buscar producto..."
+                style="flex:1;padding:0.6rem 1rem;border:1.5px solid #ddd;border-radius:8px;font-size:0.95rem;outline:none;">
             <button type="submit" class="btn-rojo" style="padding:0.6rem 1.2rem;">Buscar</button>
             <?php if ($busqueda || $categoria_id): ?>
-                <a href="catalogo.php" class="btn-outline" 
-                   style="padding:0.6rem 1rem;border-color:#ccc;color:#555;">✕</a>
+                <a href="catalogo.php" class="btn-outline"
+                    style="padding:0.6rem 1rem;border-color:#ccc;color:#555;">✕</a>
             <?php endif; ?>
         </form>
 
         <!-- Categorías -->
         <div class="grid-categorias" style="margin-bottom:2rem;">
-            <a href="catalogo.php" 
-               class="card-categoria <?= !$categoria_id ? 'activo' : '' ?>">
+            <a href="catalogo.php"
+                class="card-categoria <?= !$categoria_id ? 'activo' : '' ?>">
                 <div class="icono">🏪</div>
                 <p>Todos</p>
             </a>
             <?php foreach ($categorias as $cat): ?>
-                <a href="?categoria=<?= $cat['id'] ?><?= $busqueda ? '&buscar='.urlencode($busqueda) : '' ?>"
-                   class="card-categoria <?= $categoria_id == $cat['id'] ? 'activo' : '' ?>">
+                <a href="?categoria=<?= $cat['id'] ?><?= $busqueda ? '&buscar=' . urlencode($busqueda) : '' ?>"
+                    class="card-categoria <?= $categoria_id == $cat['id'] ? 'activo' : '' ?>">
                     <div class="icono"><?= $iconos[$cat['nombre']] ?? '📦' ?></div>
                     <p><?= htmlspecialchars($cat['nombre']) ?></p>
                 </a>
@@ -104,47 +109,60 @@ $iconos = [
                 </div>
             <?php endif; ?>
             <?php foreach ($productos as $p): ?>
-            <div class="card-producto">
-                <div class="card-producto-img">
-                    <?= $iconos[$p['categoria_nombre']] ?? '📦' ?>
-                </div>
-                <div class="card-producto-body">
-                    <div class="card-producto-nombre"><?= htmlspecialchars($p['nombre']) ?></div>
-                    <div class="card-producto-desc">
-                        <?= htmlspecialchars($p['descripcion'] ?? $p['categoria_nombre']) ?>
+                <div class="card-producto">
+                    <div class="card-producto-img">
+                        <?php if (!empty($p['foto'])): ?>
+                            <img src="img/productos/<?= htmlspecialchars($p['foto']) ?>"
+                                alt="<?= htmlspecialchars($p['nombre']) ?>"
+                                style="width:100%;height:100%;object-fit:cover;">
+                        <?php else: ?>
+                            <span style="font-size:3rem;">
+                                <?= $iconos[$p['categoria_nombre']] ?? '📦' ?>
+                            </span>
+                        <?php endif; ?>
                     </div>
-                    <div class="card-producto-precio">S/. <?= number_format($p['precio_venta'], 2) ?></div>
-                    <button class="btn-agregar"
-                        onclick="agregarAlCotizador(<?= $p['id'] ?>, '<?= htmlspecialchars(addslashes($p['nombre'])) ?>', <?= $p['precio_venta'] ?>)">
-                        + Agregar a cotización
-                    </button>
+                    <div class="card-producto-body">
+                        <div class="card-producto-nombre"><?= htmlspecialchars($p['nombre']) ?></div>
+                        <div class="card-producto-desc">
+                            <?= htmlspecialchars($p['descripcion'] ?? $p['categoria_nombre']) ?>
+                        </div>
+                        <div class="card-producto-precio">S/. <?= number_format($p['precio_venta'], 2) ?></div>
+                        <button class="btn-agregar"
+                            onclick="agregarAlCotizador(<?= $p['id'] ?>, '<?= htmlspecialchars(addslashes($p['nombre'])) ?>', <?= $p['precio_venta'] ?>)">
+                            + Agregar a cotización
+                        </button>
+                    </div>
                 </div>
-            </div>
             <?php endforeach; ?>
         </div>
     </div>
 </section>
 
 <script>
-function agregarAlCotizador(id, nombre, precio) {
-    let carrito = JSON.parse(localStorage.getItem('js_cotizador') || '[]');
-    const idx   = carrito.findIndex(i => i.id === id);
-    if (idx >= 0) {
-        carrito[idx].cantidad++;
-    } else {
-        carrito.push({ id, nombre, precio, cantidad: 1 });
-    }
-    localStorage.setItem('js_cotizador', JSON.stringify(carrito));
+    function agregarAlCotizador(id, nombre, precio) {
+        let carrito = JSON.parse(localStorage.getItem('js_cotizador') || '[]');
+        const idx = carrito.findIndex(i => i.id === id);
+        if (idx >= 0) {
+            carrito[idx].cantidad++;
+        } else {
+            carrito.push({
+                id,
+                nombre,
+                precio,
+                cantidad: 1
+            });
+        }
+        localStorage.setItem('js_cotizador', JSON.stringify(carrito));
 
-    // Feedback visual
-    const btn = event.target;
-    btn.textContent = '✓ Agregado';
-    btn.style.background = '#27AE60';
-    setTimeout(() => {
-        btn.textContent = '+ Agregar a cotización';
-        btn.style.background = '';
-    }, 1500);
-}
+        // Feedback visual
+        const btn = event.target;
+        btn.textContent = '✓ Agregado';
+        btn.style.background = '#27AE60';
+        setTimeout(() => {
+            btn.textContent = '+ Agregar a cotización';
+            btn.style.background = '';
+        }, 1500);
+    }
 </script>
 
 <?php require_once 'footer.php'; ?>
