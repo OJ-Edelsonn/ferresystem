@@ -7,16 +7,27 @@ $tel_whatsapp = '51900749742';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= htmlspecialchars($titulo ?? 'J&S Ferretería') ?> — Quiparacra, Pasco</title>
     <link rel="icon" type="image/png" href="img/favicon.png">
     <link rel="shortcut icon" type="image/png" href="img/favicon.png">
-    <title><?= htmlspecialchars($titulo ?? 'J&S Ferretería') ?> — Quiparacra, Pasco</title>
     <link rel="stylesheet" href="css/estilos.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Forzar menú oculto en móvil ANTES de que cualquier JS o Bootstrap cargue */
+        @media (max-width: 768px) {
+            #navMenu {
+                display: none !important;
+            }
+            #navMenu.abierto {
+                display: flex !important;
+            }
+        }
+    </style>
 </head>
 <body>
 
 <nav class="navbar-js">
-    <a href="index.php" class="navbar-logo-link">
+    <a href="index.php" style="text-decoration:none;">
         <div class="navbar-logo">J&S <span>Ferretería</span></div>
     </a>
 
@@ -26,6 +37,7 @@ $tel_whatsapp = '51900749742';
         <span></span>
     </button>
 
+    <!-- El menú NO tiene clase 'abierto' por defecto — empieza oculto -->
     <ul class="navbar-nav" id="navMenu">
         <li><a href="index.php"
                class="<?= ($pagina_activa ?? '') === 'inicio'    ? 'activo' : '' ?>">Inicio</a></li>
@@ -44,30 +56,38 @@ $tel_whatsapp = '51900749742';
 (function() {
     var toggle = document.getElementById('navToggle');
     var menu   = document.getElementById('navMenu');
+    var abierto = false;
 
     toggle.addEventListener('click', function() {
-        var abierto = menu.getAttribute('data-abierto') === 'true';
+        abierto = !abierto;
         if (abierto) {
-            menu.setAttribute('data-abierto', 'false');
-            menu.style.display = 'none';
-            toggle.classList.remove('activo');
-        } else {
-            menu.setAttribute('data-abierto', 'true');
-            menu.style.display = 'flex';
+            menu.classList.add('abierto');
             toggle.classList.add('activo');
+        } else {
+            menu.classList.remove('abierto');
+            toggle.classList.remove('activo');
         }
     });
 
-    // Cerrar menú al tocar un enlace en móvil
+    // Cerrar al tocar un enlace en móvil
     var links = menu.querySelectorAll('a');
-    links.forEach(function(link) {
-        link.addEventListener('click', function() {
+    for (var i = 0; i < links.length; i++) {
+        links[i].addEventListener('click', function() {
             if (window.innerWidth <= 768) {
-                menu.setAttribute('data-abierto', 'false');
-                menu.style.display = 'none';
+                abierto = false;
+                menu.classList.remove('abierto');
                 toggle.classList.remove('activo');
             }
         });
+    }
+
+    // Cerrar si se redimensiona a desktop
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) {
+            menu.classList.remove('abierto');
+            toggle.classList.remove('activo');
+            abierto = false;
+        }
     });
 })();
 </script>
