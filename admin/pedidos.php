@@ -59,8 +59,8 @@ require_once 'layout.php';
     foreach ($estados as $val => $label):
     ?>
         <a href="?estado=<?= $val ?>"
-           class="btn btn-sm <?= $estado_filtro === $val ? 'text-white' : 'btn-outline-secondary' ?>"
-           style="<?= $estado_filtro === $val ? 'background:#1B2A4A;' : '' ?>">
+            class="btn btn-sm <?= $estado_filtro === $val ? 'text-white' : 'btn-outline-secondary' ?>"
+            style="<?= $estado_filtro === $val ? 'background:#1B2A4A;' : '' ?>">
             <?= $label ?>
         </a>
     <?php endforeach; ?>
@@ -82,89 +82,91 @@ require_once 'layout.php';
             </tr>
         </thead>
         <tbody>
-        <?php if (empty($pedidos)): ?>
-            <tr><td colspan="8" class="text-center py-4 text-muted">No hay pedidos.</td></tr>
-        <?php endif; ?>
-        <?php foreach ($pedidos as $p): ?>
-            <tr>
-                <td><?= $p['id'] ?></td>
-                <td><strong><?= htmlspecialchars($p['cliente_nombre']) ?></strong></td>
-                <td><?= htmlspecialchars($p['cliente_telefono']) ?></td>
-                <td><?= htmlspecialchars($p['cliente_direccion']) ?></td>
-                <td>S/. <?= number_format($p['total'], 2) ?></td>
-                <td>
-                    <?php
-                    $badges = [
-                        'pendiente'  => 'bg-warning text-dark',
-                        'en_proceso' => 'bg-primary',
-                        'entregado'  => 'bg-success',
-                    ];
-                    $labels = [
-                        'pendiente'  => 'Pendiente',
-                        'en_proceso' => 'En proceso',
-                        'entregado'  => 'Entregado',
-                    ];
-                    ?>
-                    <span class="badge <?= $badges[$p['estado']] ?>">
-                        <?= $labels[$p['estado']] ?>
-                    </span>
-                </td>
-                <td><?= date('d/m/Y H:i', strtotime($p['fecha'])) ?></td>
-                <td>
-                    <div class="d-flex gap-1 flex-wrap">
-                        <button class="btn btn-sm btn-outline-primary"
-                            onclick="verDetallePedido(<?= $p['id'] ?>)">Ver</button>
-                        <?php if ($p['estado'] === 'pendiente'): ?>
-                            <form method="POST">
-                                <input type="hidden" name="accion" value="cambiar_estado">
-                                <input type="hidden" name="pedido_id" value="<?= $p['id'] ?>">
-                                <input type="hidden" name="estado" value="en_proceso">
-                                <button class="btn btn-sm btn-outline-primary">En proceso</button>
-                            </form>
-                        <?php endif; ?>
-                        <?php if ($p['estado'] === 'en_proceso'): ?>
-                            <form method="POST">
-                                <input type="hidden" name="accion" value="cambiar_estado">
-                                <input type="hidden" name="pedido_id" value="<?= $p['id'] ?>">
-                                <input type="hidden" name="estado" value="entregado">
-                                <button class="btn btn-sm btn-outline-success">Entregado</button>
-                            </form>
-                            <form method="POST" onsubmit="return confirm('¿Registrar venta desde este pedido?')">
-                                <input type="hidden" name="accion" value="registrar_venta_desde_pedido">
-                                <input type="hidden" name="pedido_id" value="<?= $p['id'] ?>">
-                                <button class="btn btn-sm btn-outline-secondary">+ Venta</button>
-                            </form>
-                        <?php endif; ?>
-                    </div>
-                </td>
-            </tr>
-        <?php endforeach; ?>
+            <?php if (empty($pedidos)): ?>
+                <tr>
+                    <td colspan="8" class="text-center py-4 text-muted">No hay pedidos.</td>
+                </tr>
+            <?php endif; ?>
+            <?php foreach ($pedidos as $p): ?>
+                <tr>
+                    <td><?= $p['id'] ?></td>
+                    <td><strong><?= htmlspecialchars($p['cliente_nombre']) ?></strong></td>
+                    <td><?= htmlspecialchars($p['cliente_telefono']) ?></td>
+                    <td><?= htmlspecialchars($p['cliente_direccion']) ?></td>
+                    <td>S/. <?= number_format($p['total'], 2) ?></td>
+                    <td>
+                        <?php
+                        $badges = [
+                            'pendiente'  => 'bg-warning text-dark',
+                            'en_proceso' => 'bg-primary',
+                            'entregado'  => 'bg-success',
+                        ];
+                        $labels = [
+                            'pendiente'  => 'Pendiente',
+                            'en_proceso' => 'En proceso',
+                            'entregado'  => 'Entregado',
+                        ];
+                        ?>
+                        <span class="badge <?= $badges[$p['estado']] ?>">
+                            <?= $labels[$p['estado']] ?>
+                        </span>
+                    </td>
+                    <td><?= date('d/m/Y H:i', strtotime($p['fecha'])) ?></td>
+                    <td>
+                        <div class="d-flex gap-1 flex-wrap">
+                            <button class="btn btn-sm btn-outline-primary"
+                                onclick="verDetallePedido(<?= $p['id'] ?>)">Ver</button>
+                            <?php if ($p['estado'] === 'pendiente'): ?>
+                                <form method="POST">
+                                    <input type="hidden" name="accion" value="cambiar_estado">
+                                    <input type="hidden" name="pedido_id" value="<?= $p['id'] ?>">
+                                    <input type="hidden" name="estado" value="en_proceso">
+                                    <button class="btn btn-sm btn-outline-primary">En proceso</button>
+                                </form>
+                            <?php endif; ?>
+                            <?php if ($p['estado'] === 'en_proceso'): ?>
+                                <form method="POST">
+                                    <input type="hidden" name="accion" value="cambiar_estado">
+                                    <input type="hidden" name="pedido_id" value="<?= $p['id'] ?>">
+                                    <input type="hidden" name="estado" value="entregado">
+                                    <button class="btn btn-sm btn-outline-success">Entregado</button>
+                                </form>
+                                <form method="POST" onsubmit="return confirm('¿Registrar venta desde este pedido?')">
+                                    <input type="hidden" name="accion" value="registrar_venta_desde_pedido">
+                                    <input type="hidden" name="pedido_id" value="<?= $p['id'] ?>">
+                                    <button class="btn btn-sm btn-outline-secondary">+ Venta</button>
+                                </form>
+                            <?php endif; ?>
+                        </div>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
         </tbody>
     </table>
 </div>
 
 <!-- Modal detalle pedido -->
 <div class="modal fade" id="modalDetallePedido" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-        <div class="modal-header" style="background:#1B2A4A;">
-            <h5 class="modal-title text-white">Detalle del pedido</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#1B2A4A;">
+                <h5 class="modal-title text-white">Detalle del pedido</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="contenidoDetallePedido">Cargando...</div>
         </div>
-        <div class="modal-body" id="contenidoDetallePedido">Cargando...</div>
     </div>
-  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-function verDetallePedido(id) {
-    document.getElementById('contenidoDetallePedido').innerHTML = 'Cargando...';
-    new bootstrap.Modal(document.getElementById('modalDetallePedido')).show();
-    fetch(`/ferresystem/admin/ajax/detalle_pedido.php?id=${id}`)
-        .then(r => r.text())
-        .then(html => document.getElementById('contenidoDetallePedido').innerHTML = html);
-}
+    function verDetallePedido(id) {
+        document.getElementById('contenidoDetallePedido').innerHTML = 'Cargando...';
+        new bootstrap.Modal(document.getElementById('modalDetallePedido')).show();
+        fetch(`/admin/ajax/detalle_pedido.php?id=${id}`)
+            .then(r => r.text())
+            .then(html => document.getElementById('contenidoDetallePedido').innerHTML = html);
+    }
 </script>
 
 <?php require_once 'layout_footer.php'; ?>
