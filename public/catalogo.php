@@ -139,29 +139,12 @@ $iconos = [
 </section>
 
 <script>
-    function agregarAlCotizador(id, nombre, precio) {
-        let carrito = JSON.parse(localStorage.getItem('js_cotizador') || '[]');
-        const idx = carrito.findIndex(i => i.id === id);
-        if (idx >= 0) {
-            carrito[idx].cantidad++;
-        } else {
-            carrito.push({
-                id,
-                nombre,
-                precio,
-                cantidad: 1
-            });
-        }
-        localStorage.setItem('js_cotizador', JSON.stringify(carrito));
-
-        // Feedback visual
-        const btn = event.target;
-        btn.textContent = '✓ Agregado';
-        btn.style.background = '#27AE60';
-        setTimeout(() => {
-            btn.textContent = '+ Agregar a cotización';
-            btn.style.background = '';
-        }, 1500);
+    function agregarAlCotizador(id, nombre, precio, stock) {
+        // Redirigir al cotizador con el producto como parámetro en la URL
+        window.location.href = 'cotizador.php?agregar_id=' + id +
+            '&agregar_nombre=' + encodeURIComponent(nombre) +
+            '&agregar_precio=' + precio +
+            '&agregar_stock=' + stock;
     }
 </script>
 

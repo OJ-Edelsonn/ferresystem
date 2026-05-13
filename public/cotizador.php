@@ -180,20 +180,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enviar_pedido'])) {
 
                     <!-- Resumen -->
                     <div style="background:#fff;border-radius:12px;padding:1.5rem;
-                            box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-bottom:1.2rem;
-                            position:sticky;top:80px;">
+            box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-bottom:1.2rem;">
                         <h3 style="font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:1rem;">
                             📋 Tu cotización
                         </h3>
 
-                        <!-- Zona de items — siempre visible, el JS la llena -->
-                        <div id="zonaItems"></div>
+                        <!-- Zona de items con scroll cuando hay muchos productos -->
+                        <div id="zonaItems"
+                            style="max-height:280px;overflow-y:auto;padding-right:4px;"></div>
 
-                        <!-- Total — oculto hasta que haya items -->
+                        <!-- Total -->
                         <div id="zonaTotal" style="display:none;border-top:2px solid #eee;
-                                               padding-top:0.75rem;margin-top:0.75rem;">
+                               padding-top:0.75rem;margin-top:0.75rem;">
                             <div style="display:flex;justify-content:space-between;
-                                    font-size:1.1rem;font-weight:700;color:var(--navy);">
+                    font-size:1.1rem;font-weight:700;color:var(--navy);">
                                 <span>Total estimado:</span>
                                 <span>S/. <span id="spanTotal">0.00</span></span>
                             </div>
@@ -254,6 +254,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enviar_pedido'])) {
 
     <script>
         var carrito = [];
+
+        // Si viene un producto desde el catálogo, agregarlo automáticamente
+        (function() {
+            var params = new URLSearchParams(window.location.search);
+            var id = parseInt(params.get('agregar_id'));
+            var nombre = params.get('agregar_nombre');
+            var precio = parseFloat(params.get('agregar_precio'));
+            var stock = parseInt(params.get('agregar_stock'));
+
+            if (id && nombre && precio) {
+                carrito.push({
+                    id: id,
+                    nombre: nombre,
+                    precio: precio,
+                    cantidad: 1,
+                    stock: stock || 99
+                });
+                renderizar();
+            }
+        })();
 
         function agregarProducto(id, nombre, precio, stock) {
             id = parseInt(id);

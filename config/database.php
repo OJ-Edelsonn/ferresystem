@@ -1,4 +1,7 @@
 <?php
+// Forzar zona horaria de Perú en todo el sistema
+date_default_timezone_set('America/Lima');
+
 if ($_SERVER['HTTP_HOST'] === 'localhost') {
     define('DB_HOST', 'localhost');
     define('DB_NAME', 'ferresystem');
@@ -19,7 +22,12 @@ function getConexion() {
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES   => false,
         ];
-        return new PDO($dsn, DB_USER, DB_PASS, $opciones);
+        $conn = new PDO($dsn, DB_USER, DB_PASS, $opciones);
+
+        // Forzar zona horaria en MySQL también
+        $conn->exec("SET time_zone = '-05:00'");
+
+        return $conn;
     } catch (PDOException $e) {
         die("Error de conexión: " . $e->getMessage());
     }
