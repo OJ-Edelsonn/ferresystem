@@ -126,7 +126,7 @@ require_once 'layout.php';
             <tr class="<?= $critico ? 'table-danger' : '' ?>">
                 <td>
                     <?php if (!empty($p['foto'])): ?>
-                        <img src="/ferresystem/public/img/productos/<?= htmlspecialchars($p['foto']) ?>"
+                        <img src="/public/img/productos/<?= htmlspecialchars($p['foto']) ?>"
                              style="width:48px;height:48px;object-fit:cover;border-radius:6px;">
                     <?php else: ?>
                         <div style="width:48px;height:48px;background:#f0f0f0;border-radius:6px;
@@ -288,7 +288,7 @@ require_once 'layout.php';
 document.getElementById('modal_foto').addEventListener('change', function() {
     var preview = document.getElementById('preview_foto');
     if (this.value) {
-        preview.innerHTML = '<img src="/ferresystem/public/img/productos/' + this.value + '" ' +
+        preview.innerHTML = '<img src="/public/img/productos/' + this.value + '" ' +
             'style="width:80px;height:80px;object-fit:cover;border-radius:8px;">';
     } else {
         preview.innerHTML = '';
@@ -311,7 +311,7 @@ function abrirEditar(p) {
     // Mostrar preview de imagen actual
     var preview = document.getElementById('preview_foto');
     if (p.foto) {
-        preview.innerHTML = '<img src="/ferresystem/public/img/productos/' + p.foto + '" ' +
+        preview.innerHTML = '<img src="/public/img/productos/' + p.foto + '" ' +
             'style="width:80px;height:80px;object-fit:cover;border-radius:8px;">';
     } else {
         preview.innerHTML = '';
