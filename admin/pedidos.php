@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Registrar venta desde pedido entregado
     if ($accion === 'registrar_venta_desde_pedido') {
-        $pedido_id = $_POST['pedido_id'];
+        $pedido_id      = $_POST['pedido_id'];
         $detalle_pedido = $pedidoCtrl->detalle($pedido_id);
         $detalle_venta  = [];
         foreach ($detalle_pedido as $item) {
@@ -34,8 +34,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ];
         }
         $resultado = $ventaCtrl->registrar(date('Y-m-d'), $detalle_venta, 'Pedido #' . $pedido_id);
-        $mensaje   = $resultado['ok'] ? 'Venta registrada desde pedido #' . $pedido_id . '.' : $resultado['error'];
-        if (!$resultado['ok']) $error = $mensaje;
+        if ($resultado['ok']) {
+            // Cambiar estado del pedido a Entregado automáticamente
+            $pedidoCtrl->cambiarEstado($pedido_id, 'entregado');
+            $mensaje = 'Venta registrada y pedido #' . $pedido_id . ' marcado como Entregado.';
+        } else {
+            $error = $resultado['error'];
+        }
     }
 }
 
